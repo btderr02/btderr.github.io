@@ -1,22 +1,608 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-    </head>
-    <body>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-        <h1>Brandon Derr</h1>
-        <script src="" async defer></script>
-    </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Brandon Derr</title>
+  
+  <!-- Use a "code-like" font from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" 
+    rel="stylesheet"
+  >
+  <link 
+  rel="stylesheet" 
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+  integrity="sha512-3oY1Kge00hTD6yNJPwwYIZIYIWyvOFcxLBGDU0hoHuKVYxe7COnB6XjNUpJYknp6i7PrTv10bk9Gi/VXGMe9Hw==" 
+  crossorigin="anonymous" 
+  referrerpolicy="no-referrer" 
+  />
+
+  <style>
+    /* Basic Reset & Smooth Scrolling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Fira Code', monospace;
+      color: #333;
+      line-height: 1.6;
+      background-color: #fafafa;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Hero Section (Header) */
+    header {
+    /* Stack the gradient and the image in the background property */
+      background: 
+        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('usmbackground.jpg') center center no-repeat;
+      
+      background-size: cover;
+      background-blend-mode: multiply;
+
+      /* You can keep your text color as white if you want it visible on dark BG */
+      color: #fff;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      font-weight: 400;
+      max-width: 700px;
+      margin: 0.5rem auto;
+    }
+
+    /* Navigation */
+    nav {
+      background: #f0f0f0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      padding: 1rem;
+    }
+    nav li {
+      margin: 0;
+    }
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #007acc;
+    }
+
+    /* Sections */
+    section {
+      padding: 3rem 2rem;
+      background: #fff;
+      margin-bottom: 2rem;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    section h2 {
+      font-weight: 600;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #007acc;
+      border-bottom: 2px solid #efefef;
+      display: inline-block;
+      padding-bottom: 0.25rem;
+    }
+    .section-intro {
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+      color: #555;
+    }
+
+    /* Card Styling */
+    .card {
+      background: #fafafa;
+      border-radius: 4px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #efefef;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .card h3 {
+      margin-bottom: 0.5rem;
+      color: #333;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .card ul {
+      margin: 0.5rem 1rem 0 1.5rem;
+    }
+    .card ul li {
+      list-style: disc;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Tag Pills under each card */
+    .card-tags {
+      margin-top: 1rem;
+    }
+    .tag {
+      display: inline-block;
+      background: #e0e0e0;
+      color: #333;
+      padding: 0.3rem 0.6rem;
+      margin: 0 0.3rem 0.3rem 0;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .tag:hover {
+      background: #007acc;
+      color: #fff;
+    }
+
+    /* Back Arrow */
+    .back-arrow {
+      position: fixed;
+      top: 100px; /* adjust as needed */
+      left: 20px;
+      display: none;
+      background: #007acc;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .back-arrow:hover {
+      background: #005b8a; /* darker blue on hover */
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      nav ul {
+        gap: 1rem;
+      }
+      .back-arrow {
+        top: 80px;
+      }
+    }
+
+    .social-links {
+      margin-top: 1rem;       /* Space above the icons */
+      display: flex;          /* Horizontal row */
+      justify-content: center;/* Center in the header */
+      gap: 1rem;              /* Space between icons */
+    }
+
+    .social-links a {
+      color: #fff;            /* White icons on the dark gradient */
+      font-size: 1.5rem;      /* Adjust icon size as you prefer */
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+      color: #007acc;         /* Highlight color on hover */
+    }
+
+  </style>
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="site.webmanifest">
+</head>
+<body>
+
+  <!-- HERO HEADER -->
+  <header id="home">
+    <h1>Brandon Derr</h1>
+    <p>Graduate Research Assistant | Data Enthusiast</p>
+  
+    <!-- SOCIAL LINKS -->
+    <div class="social-links">
+
+      <!-- Email (envelope) -->
+      <a href="mailto:btderr@gmail.com" aria-label="Email" title="Email">
+        <!-- Inline SVG for Envelope -->
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="48" 
+          height="48" 
+          fill="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path d="M4 4h16c.55 0 1 .45 1 1v1l-8.65 5.17a1 1 0 0 1-1.07 0L3 6.06V5c0-.55.45-1 1-1zm16 4.34v9.66c0 .55-.45 1-1 1H4a1 1 0 0 1-1-1V8.34l7.42 4.44a2.99 2.99 0 0 0 3.16 0L20 8.34z"/>
+        </svg>
+      </a>
+    
+      <!-- LinkedIn -->
+      <a 
+        href="https://www.linkedin.com/in/brandon-derr/" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        aria-label="LinkedIn"
+        title="LinkedIn"
+      >
+        <!-- Inline SVG for LinkedIn -->
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="40" 
+          height="40" 
+          fill="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 
+                   0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11.6 19h-2.4v-8h2.4v8zm-1.2-9.27
+                   c-.76 0-1.38-.62-1.38-1.38s.62-1.38 1.38-1.38 
+                   1.38.62 1.38 1.38-.62 1.38-1.38 1.38zm10.8 9.27h-2.4v-3.81c0-.91-.02-2.08-1.27-2.08
+                   -1.27 0-1.46.98-1.46 2v3.89h-2.4v-8h2.3v1.09h.03c.32-.59 1.1-1.21 
+                   2.26-1.21 2.42 0 2.87 1.59 2.87 3.66v4.46z"/>
+        </svg>
+      </a>
+    
+      <!-- GitHub -->
+      <a 
+        href="https://github.com/btderr02" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        aria-label="GitHub"
+        title="GitHub"
+      >
+        <!-- Inline SVG for GitHub -->
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="40" 
+          height="40" 
+          fill="currentColor" 
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 .296c-6.63 0-12 5.372-12 12 0 5.304 
+                   3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 
+                   0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61 
+                   -.546-1.386-1.333-1.757-1.333-1.757 
+                   -1.09-.744.083-.73.083-.73 1.205.084 1.84 
+                   1.236 1.84 1.236 1.07 1.835 2.807 1.305 
+                   3.493.997.108-.774.417-1.305.76-1.605 
+                   -2.665-.305-5.467-1.33-5.467-5.93 
+                   0-1.31.47-2.38 1.236-3.22-.123-.304-.536-1.527.117-3.176 
+                   0 0 1.01-.322 3.3 1.23.96-.267 1.98-.399 
+                   3-.405 1.02.006 2.04.138 
+                   3 .405 2.28-1.552 3.29-1.23 3.29-1.23 
+                   .653 1.65.24 2.873.117 3.177 
+                   .77.84 1.235 1.91 1.235 3.22 
+                   0 4.61-2.807 5.623-5.48 5.92 
+                   .43.372.81 1.102.81 2.222 
+                   0 1.606-.015 2.903-.015 3.293 
+                   0 .32.21.694.82.576 
+                   C20.565 22.092 24 17.593 24 12.296 
+                   c0-6.628-5.373-12-12-12z"/>
+        </svg>
+      </a>
+      
+    </div>
+  </header>
+  
+
+  <!-- NAVIGATION -->
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#presentations">Presentations</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- BACK ARROW (hidden by default) -->
+  <div id="backArrow" class="back-arrow">&larr; Back</div>
+
+  <!-- ABOUT SECTION -->
+  <!-- data-tags to make the entire section filterable, if needed -->
+  <section id="about" data-tags="about education">
+    <h2>About Me</h2>
+    <p class="section-intro">
+      Welcome! I am currently working as a research assistant at the University of Southern Mississippi while pursuing a Masters in political science.
+      As a research assistant, my day-to-day work involves exploratory data analysis, reviewing academic literature, statistical programming, and everything 
+      in between. I spend my time on personal coding projects and reading. Here, you will find my personal and professional portfolio as well as some of my notable
+      accomplishments with political science academia. Feel free to connect with me on LinkedIn or send me an email if you'd like to chat. I am always looking to 
+      meet new people in the data and programming world. Thanks for stopping by!
+    </p>
+    
+    <!-- Example Card with tags that match data-tags in the parent card or additional ones -->
+    <div class="card" data-tags="education about">
+      <h3>Education Background</h3>
+      <ul>
+        <li><strong>M.A., Political Science</strong> (2024-2026), The University of Southern Mississippi</li>
+        <li><strong>B.S., Political Science</strong> (2020-2024), The University of Southern Mississippi, Honors College (Magna Cum Laude)</li>
+          <ul> - Undergraduate Thesis: "Climate Change Policy Preferences and Senatorial Tweets"</ul>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SKILLS SECTION -->
+  <section id="skills" data-tags="skills">
+    <h2>Skills</h2>
+    <p class="section-intro">
+      From coding to data analytics, here are tools that I use most frequently.
+    </p>
+    <div class="card" data-tags="skills">
+      <h3>Programming Languages</h3>
+      <p>R, Python, Git, LaTeX/BibTeX, TypeScript/JavaScript (familiar), Lua (familiar) </p>
+    </div>
+    <div class="card" data-tags="skills">
+      <h3>Tools and Software</h3>
+      <p>R Studio, VS Code, GitHub, Overleaf, ArcGIS (familiar), Obsidian </p>
+    </div>
+    <div class="card">
+      <h3>Packages</h3>
+      <p><strong>R:</strong> Tidyverse</p>
+      <p><strong>Python:</strong> NumPy, Pandas, Matplotlib, Seaborn, Plotnine</p>
+    </div>
+    <div class="card">
+      <h3>Other</h3>
+      <p>Machine Learning, Natural Language Processing (NLP), Data Analytics, Research Methodology</p>
+    </div>
+  </section>
+  
+  <!-- PROJECTS & RESEARCH SECTION -->
+  <section id="projects" data-tags="typescript lua r-programming python-programming research-methodology latex">
+    <h2>Projects</h2>
+    <p class="section-intro">
+      Below are some projects I've been involved in personally or professionally.
+    </p>
+    
+    <!-- <div class="card" data-tags="typescript">
+      <h3>Obsidian Picture to Markdown Plugin</h3>
+      <p><strong>A plugin that converts pictures of written notes to structured markdown files within the Obsidian app using the GPT-4o API.
+        Written in TypeScript.
+      </strong></p>
+      <p>Personal</p>
+      <p>2025</p>
+      <div class="card-tags">
+        <span class="tag" data-filter="typescript">TypeScript</span>
+      </div>
+    </div> -->
+
+    <div class="card" data-tags="r-programming python-programming research-methodology latex">
+      <h3>"Terrorist Responses to Verbal Threats"</h3>
+      <p><strong>In progress political science paper.</strong></p>
+      <p>Research Assistant @ USM</p>
+      <p>2024-2025</p>
+      <ul>
+        <li>Developed an R-based pipeline to integrate and code ICEWS events for ISIS-related conflicts, delivering daily conflict indicators by actor and target group, which streamlines analysis for broader conflict-monitoring efforts.</li>
+        <li>Reviewed existing literature on organizational psychology and ISIS behavior, synthesizing findings to inform our empirical models.</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag" data-filter="r-programming">R Programming</span>
+        <span class="tag" data-filter="python-programming">Python</span>
+        <span class="tag" data-filter="research-methodology">Research Methodology</span>
+        <span class="tag" data-filter="latex">LaTeX/BibTex</span>
+      </div>
+    </div>
+
+    <div class="card" data-tags="r-programming python-programming">
+      <h3>ICEWSnet R Package</h3>
+      <p><strong>R package built for researchers to easily transform raw data from ICEWS into aggregations for network analysis</strong></p>
+      <p>Research Assistant @ USM</p>
+      <p>2024</p>
+      <ul>
+        <li>Developed a core function to convert ICEWS data into date-indexed interstate networks, aggregating events by time, sector types, and codes.</li>
+        <li>Optimized code contributed by other developers, aligning functionality and organization with usability.</li>
+        <li>Wrote thorough documentation for the package, guiding users on the package's use cases and workflows.</li>
+        <li>Prepared the package for CRAN publication by ensuring adherence to coding standards, testing protocols, and versioning.</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag" data-filter="r-programming">R Programming</span>
+        <span class="tag" data-filter="python-programming">Python</span>
+      </div>
+    </div>
+
+    <div class="card" data-tags="latex">
+      <h3>"Interstate Competition and Transnational Threats"</h3>
+      <p><strong>Political science paper under review.</strong></p>
+      <p>Research Assistant @ USM</p>
+      <p>2024</p>
+      <ul>
+        <li>Contributed to literature review.</li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag" data-filter="latex">LaTeX/BibTex</span>
+      </div>
+    </div>
+
+    <div class="card" data-tags="lua">
+      <h3>Obsidian Daily Notes Rainmeter</h3>
+      <p><strong>A plugin for Rainmeter that displays the current daily note within the provided file directory on the desktop.
+      </strong></p>
+      <p>Personal</p>
+      <p>2024</p>
+      <div class="card-tags">
+        <span class="tag" data-filter="lua">Lua</span>
+      </div>
+    </div>
+
+    <div class="card" data-tags="r-programming python-programming">
+      <h3>"Climate Change Policy Preferences and Senatorial Tweets"</h3>
+      <p><strong>Undergraduate Thesis</strong></p>
+      <p>Honors College @ USM</p>
+      <p>2023-2024</p>
+      <ul>
+        <li>Wrote Python web scraping application for Twitter data from specified accounts.</li>
+        <li>Trained NLP model for automated topic assignment using a sample of the Twitter data.</li>
+        <li>Created statistical models incorporating the outputs of the topic assignment algorithm with relevant control variables to measure the impact on
+          public opinion variables.
+        </li>
+      </ul>
+      <div class="card-tags">
+        <span class="tag" data-filter="r-programming">R Programming</span>
+        <span class="tag" data-filter="python-programming">Python</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS SECTION -->
+  <section id="achievements">
+    <h2>Achievements</h2>
+    <div class="card">
+      <h3>Awards</h3>
+      <ul>
+        <li><strong>2024:</strong> Graduate Competitive Travel Award ($500); School of Social Science and Global Studies Travel Award ($500)</li>
+        <li><strong>2023:</strong> Drapeau Center for Undergraduate Research Eagle SPUR Grant ($1,500)</li>
+        <li><strong>2022:</strong> Drapeau Center for Undergraduate Research Unanticipated Opportunities Grant ($500)</li>
+        <li><strong>2021:</strong> Allan McBride Political Science Methods Award</li>
+        <li><strong>2020:</strong> USM Honors College Discovery Scholarship (Full Undergraduate Tuition, Study Abroad Stipend, $1500 Research Stipend)</li>
+      </ul>
+    </div>
+    
+    <div class="card">
+      <h3>Certifications</h3>
+      <ul>
+        <li>CITI Program: Common Course for USM Grad Students (Completed Aug 2024)</li>
+        <li>CITI Program: Common Course for USM Undergrad (Completed Mar 2023)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SPEAKING SECTION -->
+  <section id="presentations">
+    <h2>Presentations</h2>
+    <div class="card">
+      <ul>
+        <li><strong>January 2024</strong> - Southern Political Science Association, San Juan, Puerto Rico
+          <ul> - "Elite Cues on Social Media: Modeling Climate Policy Preferences in Congressional Districts" w/ Iliyan Iliev.</ul>
+          <ul> - "Transnational Networks and the Bridging of International and Subnational Conflict Studies" w/ Brandon Kinne, Juan Tellez, Iliyan Iliev,
+            Anya Stewart, and Shreya Murthy.
+          </ul>
+        </li>
+        <li><strong>April 2024</strong> - Undergraduate Symposium on Research and Creative Activity, Hattiesburg, Mississippi 
+          <ul> - "Climate Change Policy Preferences and Senatorial Rhetoric"</ul>
+        </li>
+        <li><strong>April 2024</strong> - Midwestern Political Science Association, Chicago, Illinois
+          <ul> - "Climate Change Policy Preferences and Online Senatorial Rhetoric"</ul>
+        </li>
+        <li><strong>January 2024</strong> - Southern Political Science Association, New Orleans, Louisiana
+          <ul> - "Climate Change Policy Preferences and Online Senatorial Rhetoric"</ul> 
+        </li>
+        <li><strong>April 2023</strong> - Midwestern Political Science Association, Chicago, Illinois
+          <ul> - "Climate Change Consensus and US Senatorial Speech"</ul>
+        </li>
+        <li><strong>January 2023</strong> - Southern Political Science Association, St. Pete Beach, Florida 
+          <ul> - "Climate Change Consensus and US Senatorial Speech"</ul>
+        </li>                            
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact">
+    <h2>Contact Info and Links</h2>
+    <div class="card">
+      <h3>Get in Touch</h3>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:btderr@gmail.com">btderr@gmail.com</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Other Places You Can Find Me</h3>
+      <ul>
+        <li><a href="https://www.linkedin.com/in/brandon-derr/"><strong>LinkedIn</strong></a></li>
+        <li><a href="https://github.com/btderr02"><strong>GitHub</strong></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; <span id="year"></span> Brandon Derr. All rights reserved.</p>
+  </footer>
+
+  <!-- Simple JS to update year automatically and handle tag filtering -->
+  <script>
+    // Update year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Grab all filterable elements (those with data-tags)
+    const allFilterableEls = document.querySelectorAll("[data-tags]");
+
+    // Grab all the small 'tag' spans
+    const tagSpans = document.querySelectorAll(".tag");
+
+    // Back arrow
+    const backArrow = document.getElementById("backArrow");
+
+    // Add click listener to each tag
+    tagSpans.forEach(tag => {
+      tag.addEventListener("click", () => {
+        const filter = tag.getAttribute("data-filter");
+
+        // Hide any currently displayed elements unless they contain the chosen tag
+        allFilterableEls.forEach(el => {
+          // Each el's data-tags
+          const tags = el.getAttribute("data-tags").split(" ");
+          if (tags.includes(filter)) {
+            el.style.display = "";
+          } else {
+            el.style.display = "none";
+          }
+        });
+
+        // Show the back arrow
+        backArrow.style.display = "inline-block";
+        // Optionally, scroll to top or do other UI changes
+      });
+    });
+
+    // Back arrow click -> Show everything again
+    backArrow.addEventListener("click", () => {
+      allFilterableEls.forEach(el => {
+        el.style.display = "";
+      });
+      // Hide the arrow again
+      backArrow.style.display = "none";
+    });
+  </script>
+</body>
 </html>
