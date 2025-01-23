@@ -11,151 +11,150 @@
     rel="stylesheet"
   >
   <link 
-  rel="stylesheet" 
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
-  integrity="sha512-3oY1Kge00hTD6yNJPwwYIZIYIWyvOFcxLBGDU0hoHuKVYxe7COnB6XjNUpJYknp6i7PrTv10bk9Gi/VXGMe9Hw==" 
-  crossorigin="anonymous" 
-  referrerpolicy="no-referrer" 
+    rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" 
+    integrity="sha512-3oY1Kge00hTD6yNJPwwYIZIYIWyvOFcxLBGDU0hoHuKVYxe7COnB6XjNUpJYknp6i7PrTv10bk9Gi/VXGMe9Hw==" 
+    crossorigin="anonymous" 
+    referrerpolicy="no-referrer" 
   />
 
   <style>
-    /* Basic Reset & Smooth Scrolling */
-    * {
+    /* 1) Lock the page / no browser scrolling */
+    html, body {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden; /* no page scrolling */
+      font-family: 'Fira Code', monospace;
+      background-color: #1c1c1c; /* Dark background */
+      color: white;              /* Lighter text */
+    }
+
+    /* 2) A container that fills the viewport and creates three columns */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr; /* left, center, right */
+      gap: 1.5rem;
+      width: 100%;
+      height: 100vh;       /* fill the entire browser height */
+      padding: 1rem;
       box-sizing: border-box;
     }
-    html {
-      scroll-behavior: smooth;
+
+    /* Columns are flex containers. */
+    .left-column, .center-column, .right-column {
+      background: #333;            /* Dark background for columns */
+      border-radius: 4px;
+      border: 1px solid #444;      /* Slightly lighter border */
+      box-shadow: 0 1px 3px rgba(0,0,0,0.7); /* Subtle shadow */
+
+      display: flex;            /* flex layout */
+      flex-direction: column;   /* vertical stacking of child sections */
+      overflow: hidden;         /* hide column scroll (we'll scroll sections) */
     }
 
-    body {
-      font-family: 'Fira Code', monospace;
-      color: #333;
-      line-height: 1.6;
-      background-color: #fafafa;
-      max-width: 1200px;
-      margin: 0 auto;
+    /*
+      Each major section within a column can scroll independently.
+      flex: 1 => each section can share space
+      min-height: 0 => important for overflow
+      overflow-y: auto => each section has its own scrollbar
+    */
+    .scroll-section {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0rem 1rem;
+      box-sizing: border-box;
+      margin-bottom: 1rem;
+    }
+    .left-column .scroll-section:last-child,
+    .center-column .scroll-section:last-child,
+    .right-column .scroll-section:last-child {
+      margin-bottom: 0;
     }
 
-    /* Hero Section (Header) */
-    header {
-    /* Stack the gradient and the image in the background property */
-      background: 
-        linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-        url('usmbackground.jpg') center center no-repeat;
-      
-      background-size: cover;
-      background-blend-mode: multiply;
-
-      /* You can keep your text color as white if you want it visible on dark BG */
-      color: #fff;
-      text-align: center;
-      padding: 4rem 2rem;
-      position: relative;
-    }
-    header h1 {
-      font-size: 2.5rem;
+    /*
+      Keep the H2 pinned at the top inside each scroll-section:
+      position: sticky; top: 0;
+      z-index ensures the heading is above cards when scrolling.
+      background so text doesn't overlap content behind.
+    */
+    .scroll-section h2 {
+      position: sticky;
+      top: 0;
+      background: #333; /* match the column color */
+      z-index: 10;
+      margin: 0;
+      color: #66b1ff;  /* Accent color for headings */
+      font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
-    }
-    header p {
-      font-size: 1.2rem;
-      font-weight: 400;
-      max-width: 700px;
-      margin: 0.5rem auto;
-    }
-
-    /* Navigation */
-    nav {
-      background: #f0f0f0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      padding: 1rem;
-    }
-    nav li {
-      margin: 0;
-    }
-    nav a {
-      text-decoration: none;
-      color: #333;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #007acc;
-    }
-
-    /* Sections */
-    section {
-      padding: 3rem 2rem;
-      background: #fff;
-      margin-bottom: 2rem;
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    section h2 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      color: #007acc;
-      border-bottom: 2px solid #efefef;
-      display: inline-block;
       padding-bottom: 0.25rem;
     }
-    .section-intro {
-      margin-bottom: 1.5rem;
-      font-weight: 400;
-      color: #555;
+
+    /* Profile at the top-left (non-scrolling if placed outside .scroll-section) */
+    .profile {
+      display: flex;
+      align-items: center;
+      padding: 1rem;
+    }
+    .profile img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 0.75rem;
+    }
+    .profile h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #66b1ff; /* Same accent as headings */
+      margin: 0;
     }
 
-    /* Card Styling */
+    /* Card layout */
     .card {
-      background: #fafafa;
+      background: #444;         /* Darker card background */
+      border: 1px solid #555;   /* Slightly lighter border */
       border-radius: 4px;
       padding: 1rem;
       margin-bottom: 1rem;
-      border: 1px solid #efefef;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .card:hover {
+    /* You can re-enable or tweak the hover effect if you'd like */
+    /* .card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+      box-shadow: 0 4px 6px rgba(0,0,0,0.4);
+    } */
     .card h3 {
       margin-bottom: 0.5rem;
-      color: #333;
+      color: #fff;
       font-size: 1.2rem;
       font-weight: 600;
     }
     .card p {
       font-size: 0.95rem;
-      color: #555;
+      color: white;
     }
     .card ul {
-      margin: 0.5rem 1rem 0 1.5rem;
+      margin: 0.5rem 1.5rem;
+      list-style: disc;
     }
     .card ul li {
-      list-style: disc;
       margin-bottom: 0.5rem;
+      color: white;
     }
 
-    /* Tag Pills under each card */
+    /* Tag "pills" for project filtering */
     .card-tags {
-      margin-top: 1rem;
+      margin-top: 0.75rem;
     }
     .tag {
       display: inline-block;
-      background: #e0e0e0;
-      color: #333;
+      background: #555;
+      color: white;
       padding: 0.3rem 0.6rem;
       margin: 0 0.3rem 0.3rem 0;
       border-radius: 4px;
@@ -168,60 +167,56 @@
       color: #fff;
     }
 
-    /* Back Arrow */
-    .back-arrow {
-      position: fixed;
-      top: 100px; /* adjust as needed */
-      left: 20px;
+    /* Back arrow for project filtering */
+    #backArrow {
       display: none;
       background: #007acc;
       color: #fff;
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 4px;
       cursor: pointer;
       font-weight: 600;
+      margin-bottom: 1rem;
+      width: fit-content;
     }
-    .back-arrow:hover {
-      background: #005b8a; /* darker blue on hover */
+    #backArrow:hover {
+      background: #005b8a;
     }
 
-    /* Footer */
+    /* Footer can be placed in whichever scrollable section you prefer. */
     footer {
       text-align: center;
-      padding: 2rem 1rem;
+      margin-top: 2rem; /* space above footer */
       font-size: 0.9rem;
       color: #888;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
-      nav ul {
-        gap: 1rem;
-      }
-      .back-arrow {
-        top: 80px;
-      }
+    h2.skills-contact-about{
+      padding-top: 0;
     }
 
-    .social-links {
-      margin-top: 1rem;       /* Space above the icons */
-      display: flex;          /* Horizontal row */
-      justify-content: center;/* Center in the header */
-      gap: 1rem;              /* Space between icons */
+    h2.projects-achievements{
+      padding-top: 1.75rem;
+    }
+    /* Styles for both unvisited and visited links */
+    a:link,
+    a:visited {
+        color: white; /* Set your desired link color */
+        text-decoration: underline; /* Keeps the underline to indicate it's a link */
     }
 
-    .social-links a {
-      color: #fff;            /* White icons on the dark gradient */
-      font-size: 1.5rem;      /* Adjust icon size as you prefer */
-      transition: color 0.3s;
+    .profile img {
+        width: 75px; /* Increase from 50px to 75px */
+        height: 75px; /* Increase from 50px to 75px */
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 0.75rem;
     }
-
-    .social-links a:hover {
-      color: #007acc;         /* Highlight color on hover */
+    .profile h1 {
+        font-size: 1.75rem; /* Increase from 1.4rem to 1.75rem */
+        font-weight: 600;
+        color: #66b1ff;
+        margin: 0;
     }
 
   </style>
@@ -231,376 +226,261 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="manifest" href="site.webmanifest">
+  
 </head>
 <body>
-
-  <!-- HERO HEADER -->
-  <header id="home">
-    <h1>Brandon Derr</h1>
-    <p>Graduate Research Assistant | Data Enthusiast</p>
-  
-    <!-- SOCIAL LINKS -->
-    <div class="social-links">
-
-      <!-- Email (envelope) -->
-      <a href="mailto:btderr@gmail.com" aria-label="Email" title="Email">
-        <!-- Inline SVG for Envelope -->
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="48" 
-          height="48" 
-          fill="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path d="M4 4h16c.55 0 1 .45 1 1v1l-8.65 5.17a1 1 0 0 1-1.07 0L3 6.06V5c0-.55.45-1 1-1zm16 4.34v9.66c0 .55-.45 1-1 1H4a1 1 0 0 1-1-1V8.34l7.42 4.44a2.99 2.99 0 0 0 3.16 0L20 8.34z"/>
-        </svg>
-      </a>
-    
-      <!-- LinkedIn -->
-      <a 
-        href="https://www.linkedin.com/in/brandon-derr/" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        aria-label="LinkedIn"
-        title="LinkedIn"
-      >
-        <!-- Inline SVG for LinkedIn -->
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="40" 
-          height="40" 
-          fill="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 
-                   0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11.6 19h-2.4v-8h2.4v8zm-1.2-9.27
-                   c-.76 0-1.38-.62-1.38-1.38s.62-1.38 1.38-1.38 
-                   1.38.62 1.38 1.38-.62 1.38-1.38 1.38zm10.8 9.27h-2.4v-3.81c0-.91-.02-2.08-1.27-2.08
-                   -1.27 0-1.46.98-1.46 2v3.89h-2.4v-8h2.3v1.09h.03c.32-.59 1.1-1.21 
-                   2.26-1.21 2.42 0 2.87 1.59 2.87 3.66v4.46z"/>
-        </svg>
-      </a>
-    
-      <!-- GitHub -->
-      <a 
-        href="https://github.com/btderr02" 
-        target="_blank" 
-        rel="noopener noreferrer"
-        aria-label="GitHub"
-        title="GitHub"
-      >
-        <!-- Inline SVG for GitHub -->
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="40" 
-          height="40" 
-          fill="currentColor" 
-          viewBox="0 0 24 24"
-        >
-          <path d="M12 .296c-6.63 0-12 5.372-12 12 0 5.304 
-                   3.438 9.8 8.205 11.387.6.113.82-.26.82-.577 
-                   0-.285-.01-1.04-.016-2.04-3.338.726-4.042-1.61-4.042-1.61 
-                   -.546-1.386-1.333-1.757-1.333-1.757 
-                   -1.09-.744.083-.73.083-.73 1.205.084 1.84 
-                   1.236 1.84 1.236 1.07 1.835 2.807 1.305 
-                   3.493.997.108-.774.417-1.305.76-1.605 
-                   -2.665-.305-5.467-1.33-5.467-5.93 
-                   0-1.31.47-2.38 1.236-3.22-.123-.304-.536-1.527.117-3.176 
-                   0 0 1.01-.322 3.3 1.23.96-.267 1.98-.399 
-                   3-.405 1.02.006 2.04.138 
-                   3 .405 2.28-1.552 3.29-1.23 3.29-1.23 
-                   .653 1.65.24 2.873.117 3.177 
-                   .77.84 1.235 1.91 1.235 3.22 
-                   0 4.61-2.807 5.623-5.48 5.92 
-                   .43.372.81 1.102.81 2.222 
-                   0 1.606-.015 2.903-.015 3.293 
-                   0 .32.21.694.82.576 
-                   C20.565 22.092 24 17.593 24 12.296 
-                   c0-6.628-5.373-12-12-12z"/>
-        </svg>
-      </a>
-      
-    </div>
-  </header>
-  
-
-  <!-- NAVIGATION -->
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#achievements">Achievements</a></li>
-      <li><a href="#presentations">Presentations</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
-
-  <!-- BACK ARROW (hidden by default) -->
-  <div id="backArrow" class="back-arrow">&larr; Back</div>
-
-  <!-- ABOUT SECTION -->
-  <!-- data-tags to make the entire section filterable, if needed -->
-  <section id="about" data-tags="about education">
-    <h2>About Me</h2>
-    <p class="section-intro">
-      Welcome! I am currently working as a research assistant at the University of Southern Mississippi while pursuing a Masters in political science.
-      As a research assistant, my day-to-day work involves exploratory data analysis, reviewing academic literature, statistical programming, and everything 
-      in between. I spend my time on personal coding projects and reading. Here, you will find my personal and professional portfolio as well as some of my notable
-      accomplishments with political science academia. Feel free to connect with me on LinkedIn or send me an email if you'd like to chat. I am always looking to 
-      meet new people in the data and programming world. Thanks for stopping by!
-    </p>
-    
-    <!-- Example Card with tags that match data-tags in the parent card or additional ones -->
-    <div class="card" data-tags="education about">
-      <h3>Education Background</h3>
-      <ul>
-        <li><strong>M.A., Political Science</strong> (2024-2026), The University of Southern Mississippi</li>
-        <li><strong>B.S., Political Science</strong> (2020-2024), The University of Southern Mississippi, Honors College (Magna Cum Laude)</li>
-          <ul> - Undergraduate Thesis: "Climate Change Policy Preferences and Senatorial Tweets"</ul>
-      </ul>
-    </div>
-  </section>
-
-  <!-- SKILLS SECTION -->
-  <section id="skills" data-tags="skills">
-    <h2>Skills</h2>
-    <p class="section-intro">
-      From coding to data analytics, here are tools that I use most frequently.
-    </p>
-    <div class="card" data-tags="skills">
-      <h3>Programming Languages</h3>
-      <p>R, Python, Git, LaTeX/BibTeX, TypeScript/JavaScript (familiar), Lua (familiar) </p>
-    </div>
-    <div class="card" data-tags="skills">
-      <h3>Tools and Software</h3>
-      <p>R Studio, VS Code, GitHub, Overleaf, ArcGIS (familiar), Obsidian </p>
-    </div>
-    <div class="card">
-      <h3>Packages</h3>
-      <p><strong>R:</strong> Tidyverse</p>
-      <p><strong>Python:</strong> NumPy, Pandas, Matplotlib, Seaborn, Plotnine</p>
-    </div>
-    <div class="card">
-      <h3>Other</h3>
-      <p>Machine Learning, Natural Language Processing (NLP), Data Analytics, Research Methodology</p>
-    </div>
-  </section>
-  
-  <!-- PROJECTS & RESEARCH SECTION -->
-  <section id="projects" data-tags="typescript lua r-programming python-programming research-methodology latex">
-    <h2>Projects</h2>
-    <p class="section-intro">
-      Below are some projects I've been involved in personally or professionally.
-    </p>
-    
-    <!-- <div class="card" data-tags="typescript">
-      <h3>Obsidian Picture to Markdown Plugin</h3>
-      <p><strong>A plugin that converts pictures of written notes to structured markdown files within the Obsidian app using the GPT-4o API.
-        Written in TypeScript.
-      </strong></p>
-      <p>Personal</p>
-      <p>2025</p>
-      <div class="card-tags">
-        <span class="tag" data-filter="typescript">TypeScript</span>
+  <div class="container">
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
+      <!-- Fixed Profile section at the top (non-scroll) -->
+      <div class="profile">
+        <img src="profile.jpg" alt="Profile Picture">
+        <h1>Brandon Derr</h1>
       </div>
-    </div> -->
 
-    <div class="card" data-tags="r-programming python-programming research-methodology latex">
-      <h3>"Terrorist Responses to Verbal Threats"</h3>
-      <p><strong>In progress political science paper.</strong></p>
-      <p>Research Assistant @ USM</p>
-      <p>2024-2025</p>
-      <ul>
-        <li>Developed an R-based pipeline to integrate and code ICEWS events for ISIS-related conflicts, delivering daily conflict indicators by actor and target group, which streamlines analysis for broader conflict-monitoring efforts.</li>
-        <li>Reviewed existing literature on organizational psychology and ISIS behavior, synthesizing findings to inform our empirical models.</li>
-      </ul>
-      <div class="card-tags">
-        <span class="tag" data-filter="r-programming">R Programming</span>
-        <span class="tag" data-filter="python-programming">Python</span>
-        <span class="tag" data-filter="research-methodology">Research Methodology</span>
-        <span class="tag" data-filter="latex">LaTeX/BibTex</span>
-      </div>
+      <!-- About Me (scroll-section #1 in left column) -->
+      <section class="scroll-section">
+        <h2 class="skills-contact-about">About Me</h2>
+        <p>
+          Welcome! I am currently working as a research assistant at the University of Southern Mississippi 
+          while pursuing a Masters in political science. As a research assistant, my day-to-day work mainly involves 
+          exploratory data analysis, reviewing academic literature, and statistical programming. 
+          In my free time, I work personal coding projects and read as much as possible. Here, you will find my personal 
+          and professional portfolio. Feel free to connect with me on LinkedIn or send me an email if you'd like to chat. I am always looking 
+          to meet new people in the data and programming world!
+        </p>
+      </section>
+
+      <!-- Skills (scroll-section #2 in left column) -->
+      <section class="scroll-section">
+        <h2 class="skills-contact-about">Skills</h2>
+        <div class="card">
+          <h3>Programming Languages</h3>
+          <p>R, Python, Git, LaTeX/BibTeX, TypeScript/JavaScript (familiar), Lua (familiar)</p>
+        </div>
+        <div class="card">
+          <h3>Tools and Software</h3>
+          <p>R Studio, VS Code, GitHub, Overleaf, ArcGIS (familiar), Obsidian</p>
+        </div>
+        <div class="card">
+          <h3>Packages</h3>
+          <p><strong>R:</strong> Tidyverse</p>
+          <p><strong>Python:</strong> NumPy, Pandas, Matplotlib, Seaborn, Plotnine</p>
+        </div>
+        <div class="card">
+          <h3>Other</h3>
+          <p>Machine Learning, Natural Language Processing (NLP), Data Analytics, Research Methodology</p>
+        </div>
+      </section>
     </div>
 
-    <div class="card" data-tags="r-programming python-programming">
-      <h3>ICEWSnet R Package</h3>
-      <p><strong>R package built for researchers to easily transform raw data from ICEWS into aggregations for network analysis</strong></p>
-      <p>Research Assistant @ USM</p>
-      <p>2024</p>
-      <ul>
-        <li>Developed a core function to convert ICEWS data into date-indexed interstate networks, aggregating events by time, sector types, and codes.</li>
-        <li>Optimized code contributed by other developers, aligning functionality and organization with usability.</li>
-        <li>Wrote thorough documentation for the package, guiding users on the package's use cases and workflows.</li>
-        <li>Prepared the package for CRAN publication by ensuring adherence to coding standards, testing protocols, and versioning.</li>
-      </ul>
-      <div class="card-tags">
-        <span class="tag" data-filter="r-programming">R Programming</span>
-        <span class="tag" data-filter="python-programming">Python</span>
-      </div>
-    </div>
+    <!-- CENTER COLUMN -->
+    <div class="center-column">
+      <!-- Projects as one scroll-section -->
+      <section class="scroll-section" id="projects">
+        <h2 class="projects-achievements">Projects</h2>
+        <!-- Back Arrow (for filtering) -->
+        <div id="backArrow">&larr; Back</div>
 
-    <div class="card" data-tags="latex">
-      <h3>"Interstate Competition and Transnational Threats"</h3>
-      <p><strong>Political science paper under review.</strong></p>
-      <p>Research Assistant @ USM</p>
-      <p>2024</p>
-      <ul>
-        <li>Contributed to literature review.</li>
-      </ul>
-      <div class="card-tags">
-        <span class="tag" data-filter="latex">LaTeX/BibTex</span>
-      </div>
-    </div>
-
-    <div class="card" data-tags="lua">
-      <h3>Obsidian Daily Notes Rainmeter</h3>
-      <p><strong>A plugin for Rainmeter that displays the current daily note within the provided file directory on the desktop.
-      </strong></p>
-      <p>Personal</p>
-      <p>2024</p>
-      <div class="card-tags">
-        <span class="tag" data-filter="lua">Lua</span>
-      </div>
-    </div>
-
-    <div class="card" data-tags="r-programming python-programming">
-      <h3>"Climate Change Policy Preferences and Senatorial Tweets"</h3>
-      <p><strong>Undergraduate Thesis</strong></p>
-      <p>Honors College @ USM</p>
-      <p>2023-2024</p>
-      <ul>
-        <li>Wrote Python web scraping application for Twitter data from specified accounts.</li>
-        <li>Trained NLP model for automated topic assignment using a sample of the Twitter data.</li>
-        <li>Created statistical models incorporating the outputs of the topic assignment algorithm with relevant control variables to measure the impact on
-          public opinion variables.
-        </li>
-      </ul>
-      <div class="card-tags">
-        <span class="tag" data-filter="r-programming">R Programming</span>
-        <span class="tag" data-filter="python-programming">Python</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ACHIEVEMENTS SECTION -->
-  <section id="achievements">
-    <h2>Achievements</h2>
-    <div class="card">
-      <h3>Awards</h3>
-      <ul>
-        <li><strong>2024:</strong> Graduate Competitive Travel Award ($500); School of Social Science and Global Studies Travel Award ($500)</li>
-        <li><strong>2023:</strong> Drapeau Center for Undergraduate Research Eagle SPUR Grant ($1,500)</li>
-        <li><strong>2022:</strong> Drapeau Center for Undergraduate Research Unanticipated Opportunities Grant ($500)</li>
-        <li><strong>2021:</strong> Allan McBride Political Science Methods Award</li>
-        <li><strong>2020:</strong> USM Honors College Discovery Scholarship (Full Undergraduate Tuition, Study Abroad Stipend, $1500 Research Stipend)</li>
-      </ul>
-    </div>
-    
-    <div class="card">
-      <h3>Certifications</h3>
-      <ul>
-        <li>CITI Program: Common Course for USM Grad Students (Completed Aug 2024)</li>
-        <li>CITI Program: Common Course for USM Undergrad (Completed Mar 2023)</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- SPEAKING SECTION -->
-  <section id="presentations">
-    <h2>Presentations</h2>
-    <div class="card">
-      <ul>
-        <li><strong>January 2024</strong> - Southern Political Science Association, San Juan, Puerto Rico
-          <ul> - "Elite Cues on Social Media: Modeling Climate Policy Preferences in Congressional Districts" w/ Iliyan Iliev.</ul>
-          <ul> - "Transnational Networks and the Bridging of International and Subnational Conflict Studies" w/ Brandon Kinne, Juan Tellez, Iliyan Iliev,
-            Anya Stewart, and Shreya Murthy.
+        <!-- Projects Cards (each has data-tags) -->
+        <div class="card" data-tags="r-programming python-programming research-methodology latex">
+          <h3>"Terrorist Responses to Verbal Threats"</h3>
+          <p><strong>In progress political science paper.</strong></p>
+          <p>Research Assistant @ USM | 2024-2025</p>
+          <ul>
+            <li>Developed an R-based pipeline to integrate and code ICEWS events for ISIS-related conflicts,
+                delivering daily conflict indicators by actor and target group.</li>
+            <li>Reviewed existing literature on organizational psychology and ISIS behavior, synthesizing 
+                findings to inform our empirical models.</li>
           </ul>
-        </li>
-        <li><strong>April 2024</strong> - Undergraduate Symposium on Research and Creative Activity, Hattiesburg, Mississippi 
-          <ul> - "Climate Change Policy Preferences and Senatorial Rhetoric"</ul>
-        </li>
-        <li><strong>April 2024</strong> - Midwestern Political Science Association, Chicago, Illinois
-          <ul> - "Climate Change Policy Preferences and Online Senatorial Rhetoric"</ul>
-        </li>
-        <li><strong>January 2024</strong> - Southern Political Science Association, New Orleans, Louisiana
-          <ul> - "Climate Change Policy Preferences and Online Senatorial Rhetoric"</ul> 
-        </li>
-        <li><strong>April 2023</strong> - Midwestern Political Science Association, Chicago, Illinois
-          <ul> - "Climate Change Consensus and US Senatorial Speech"</ul>
-        </li>
-        <li><strong>January 2023</strong> - Southern Political Science Association, St. Pete Beach, Florida 
-          <ul> - "Climate Change Consensus and US Senatorial Speech"</ul>
-        </li>                            
-      </ul>
-    </div>
-  </section>
+          <div class="card-tags">
+            <span class="tag" data-filter="r-programming">R Programming</span>
+            <span class="tag" data-filter="python-programming">Python</span>
+            <span class="tag" data-filter="research-methodology">Research Methodology</span>
+            <span class="tag" data-filter="latex">LaTeX/BibTeX</span>
+          </div>
+        </div>
 
-  <!-- CONTACT SECTION -->
-  <section id="contact">
-    <h2>Contact Info and Links</h2>
-    <div class="card">
-      <h3>Get in Touch</h3>
-      <ul>
-        <li><strong>Email:</strong> <a href="mailto:btderr@gmail.com">btderr@gmail.com</a></li>
-      </ul>
-    </div>
-    <div class="card">
-      <h3>Other Places You Can Find Me</h3>
-      <ul>
-        <li><a href="https://www.linkedin.com/in/brandon-derr/"><strong>LinkedIn</strong></a></li>
-        <li><a href="https://github.com/btderr02"><strong>GitHub</strong></a></li>
-      </ul>
-    </div>
-  </section>
+        <div class="card" data-tags="r-programming python-programming">
+          <h3>ICEWSnet R Package</h3>
+          <p><strong>R package for researchers to transform raw ICEWS data into aggregations for network analysis.</strong></p>
+          <p>Research Assistant @ USM | 2024</p>
+          <ul>
+            <li>Developed a core function to convert ICEWS data into date-indexed interstate networks.</li>
+            <li>Optimized code from other developers and wrote thorough documentation.</li>
+            <li>Prepared the package for CRAN publication, ensuring compliance with standards and testing.</li>
+          </ul>
+          <div class="card-tags">
+            <span class="tag" data-filter="r-programming">R Programming</span>
+            <span class="tag" data-filter="python-programming">Python</span>
+          </div>
+        </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>&copy; <span id="year"></span> Brandon Derr. All rights reserved.</p>
-  </footer>
+        <div class="card" data-tags="latex">
+          <h3>"Interstate Competition and Transnational Threats"</h3>
+          <p><strong>Political science paper under review.</strong></p>
+          <p>Research Assistant @ USM | 2024</p>
+          <ul>
+            <li>Contributed to literature review.</li>
+          </ul>
+          <div class="card-tags">
+            <span class="tag" data-filter="latex">LaTeX/BibTeX</span>
+          </div>
+        </div>
 
-  <!-- Simple JS to update year automatically and handle tag filtering -->
+        <div class="card" data-tags="lua">
+          <h3>Obsidian Daily Notes Rainmeter</h3>
+          <p><strong>A plugin for Rainmeter that displays the current daily note from your Obsidian folder on the desktop.</strong></p>
+          <p>Personal | 2024 | <a href="https://github.com/btderr02/Obsidian-Daily-Notes-Rainmeter">GitHub Repository</a></p>
+          <div class="card-tags">
+            <span class="tag" data-filter="lua">Lua</span>
+          </div>
+        </div>
+
+        <div class="card" data-tags="r-programming python-programming">
+          <h3>"Climate Change Policy Preferences and Senatorial Tweets"</h3>
+          <p><strong>Undergraduate Thesis</strong></p>
+          <p>Honors College @ USM | 2023-2024</p>
+          <ul>
+            <li>Developed a Python web-scraping application for Twitter data from selected accounts.</li>
+            <li>Trained an NLP model for automated topic assignment on climate-related tweets.</li>
+            <li>Created statistical models incorporating topic assignment outputs to measure impacts on public opinion variables.</li>
+          </ul>
+          <div class="card-tags">
+            <span class="tag" data-filter="r-programming">R Programming</span>
+            <span class="tag" data-filter="python-programming">Python</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-column">
+      <!-- Achievements & Presentations -->
+      <section class="scroll-section">
+        <h2 class="projects-achievements">Achievements &amp; Presentations</h2>
+        <div class="card">
+            <h3>Degrees</h3>
+                <p><strong>The University of Southern Mississippi</strong><br>
+                <i>Master of Arts in Political Science</i> <br>
+                <ul><li>Thesis: TBD</li></ul>
+                </p>
+
+                <p><strong>The University of Southern Mississippi</strong><br>
+                <i>Bachelor of Science in Political Science, Honors College, Magna Cum Laude</i><br>
+                <ul><li>Thesis: "Climate Change Policy Preferences and Senatorial Tweets"</li></ul>
+                </p>
+        </div>
+
+        <div class="card">
+          <h3>Awards</h3>
+          <ul>
+            <li><strong>2024:</strong> Graduate Competitive Travel Award ($500); 
+              School of Social Science and Global Studies Travel Award ($500)</li>
+            <li><strong>2023:</strong> Drapeau Center for Undergraduate Research Eagle SPUR Grant ($1,500)</li>
+            <li><strong>2022:</strong> Drapeau Center for Undergraduate Research Unanticipated Opportunities Grant ($500)</li>
+            <li><strong>2021:</strong> Allan McBride Political Science Methods Award</li>
+            <li><strong>2020:</strong> USM Honors College Discovery Scholarship 
+               (Full Undergraduate Tuition, Study Abroad Stipend, $1500 Research Stipend)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Certifications</h3>
+          <ul>
+            <li>CITI Program: Common Course for USM Grad Students (Completed Aug 2024)</li>
+            <li>CITI Program: Common Course for USM Undergrad (Completed Mar 2023)</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Presentations</h3>
+          <ul>
+            <li><strong>January 2024</strong> - Southern Political Science Association, San Juan, Puerto Rico
+              <ul>
+                <li>"Elite Cues on Social Media: Modeling Climate Policy Preferences in Congressional Districts"</li>
+                <li>"Transnational Networks and the Bridging of International and Subnational Conflict Studies"</li>
+              </ul>
+            </li>
+            <li><strong>April 2024</strong> - Undergraduate Symposium on Research and Creative Activity, Hattiesburg, MS 
+              <ul><li>"Climate Change Policy Preferences and Senatorial Rhetoric"</li></ul>
+            </li>
+            <li><strong>April 2024</strong> - Midwestern Political Science Association, Chicago, IL
+              <ul><li>"Climate Change Policy Preferences and Online Senatorial Rhetoric"</li></ul>
+            </li>
+            <li><strong>January 2024</strong> - Southern Political Science Association, New Orleans, LA
+              <ul><li>"Climate Change Policy Preferences and Online Senatorial Rhetoric"</li></ul>
+            </li>
+            <li><strong>April 2023</strong> - Midwestern Political Science Association, Chicago, IL
+              <ul><li>"Climate Change Consensus and US Senatorial Speech"</li></ul>
+            </li>
+            <li><strong>January 2023</strong> - Southern Political Science Association, St. Pete Beach, FL 
+              <ul><li>"Climate Change Consensus and US Senatorial Speech"</li></ul>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Contact & Footer -->
+      <section class="scroll-section">
+        <h2 class="skills-contact-about">Contact</h2>
+        <div class="card">
+          <h3>Get in Touch</h3>
+          <ul>
+            <li><strong>Email:</strong> <a href="mailto:btderr@gmail.com">btderr@gmail.com</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Other Places You Can Find Me</h3>
+          <ul>
+            <li><a href="https://www.linkedin.com/in/brandon-derr/">LinkedIn</a></li>
+            <li><a href="https://github.com/btderr02">GitHub</a></li>
+          </ul>
+        </div>
+
+        <!-- Footer inside the same scroll area (so it appears after 'Contact') -->
+        <footer>
+          <p>&copy; <span id="year"></span> Brandon Derr. All rights reserved.</p>
+        </footer>
+      </section>
+    </div>
+  </div>
+
+  <!-- Script: Only filter project cards in the center column -->
   <script>
-    // Update year
+    // Update year in footer
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Grab all filterable elements (those with data-tags)
-    const allFilterableEls = document.querySelectorAll("[data-tags]");
+    // Grab the projects container and its filterable cards
+    const projectContainer = document.getElementById("projects");
+    const projectCards = projectContainer.querySelectorAll(".card[data-tags]");
 
-    // Grab all the small 'tag' spans
-    const tagSpans = document.querySelectorAll(".tag");
+    // Grab the tags within the projects section
+    const tagSpans = projectContainer.querySelectorAll(".tag");
 
-    // Back arrow
+    // The back arrow in the projects section
     const backArrow = document.getElementById("backArrow");
 
-    // Add click listener to each tag
+    // Add click listeners to each tag (filter only the project cards)
     tagSpans.forEach(tag => {
       tag.addEventListener("click", () => {
         const filter = tag.getAttribute("data-filter");
-
-        // Hide any currently displayed elements unless they contain the chosen tag
-        allFilterableEls.forEach(el => {
-          // Each el's data-tags
-          const tags = el.getAttribute("data-tags").split(" ");
-          if (tags.includes(filter)) {
-            el.style.display = "";
-          } else {
-            el.style.display = "none";
-          }
+        
+        projectCards.forEach(card => {
+          const tags = card.getAttribute("data-tags").split(" ");
+          card.style.display = tags.includes(filter) ? "" : "none";
         });
 
-        // Show the back arrow
+        // Show the back arrow (reset button)
         backArrow.style.display = "inline-block";
-        // Optionally, scroll to top or do other UI changes
       });
     });
 
-    // Back arrow click -> Show everything again
+    // Back arrow click -> Show all project cards again
     backArrow.addEventListener("click", () => {
-      allFilterableEls.forEach(el => {
-        el.style.display = "";
+      projectCards.forEach(card => {
+        card.style.display = "";
       });
-      // Hide the arrow again
       backArrow.style.display = "none";
     });
   </script>
